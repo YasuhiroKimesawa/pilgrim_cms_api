@@ -9,11 +9,11 @@
     "pre-commit": "^1.2.2"
   },
   "scripts": {
-    "precommit": "lint-staged"
+    "precommit": "sbt scalafmt || lint-staged"
   },
   "lint-staged": {
     "*.scala": [
-      "sbt scalafmt;sbt scalastyle",
+      "sbt scalastyle",
       "git add"
     ]
   }
