@@ -26,12 +26,15 @@ class ArticleDataSource extends ArticleRepository {
     // Collectionを取得する
     val products: MongoCollection[Document] = database.getCollection("products")
 
-    products.find.first.results.map(
-      r =>
-        decode[Article](r.toJson()) match {
-          case Right(a) => Success(a)
-          case Left(e)  => Failure(new RuntimeException(e.toString))}
-    ).head
+    products.find.first.results
+      .map(
+        r =>
+          decode[Article](r.toJson()) match {
+            case Right(a) => Success(a)
+            case Left(e)  => Failure(new RuntimeException(e.toString))
+        }
+      )
+      .head
   }
 
   override def register(article: Article): Try[Article] = {
@@ -49,8 +52,8 @@ class ArticleDataSource extends ArticleRepository {
     try {
       products.insertOne(doc2).results
       Success(article)
-    }catch {
-      case e:Exception => Failure(new RuntimeException(e.toString))
+    } catch {
+      case e: Exception => Failure(new RuntimeException(e.toString))
     }
   }
 }

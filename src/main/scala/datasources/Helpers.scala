@@ -21,6 +21,9 @@ object Helpers {
     val timeOutCount = 10
 
     def results: Seq[C] =
-      Await.result(observable.toFuture(), Duration(timeOutCount, TimeUnit.SECONDS))
+      Await.result(
+        observable.toFuture(),
+        Duration(timeOutCount, TimeUnit.SECONDS)
+      )
   }
 }

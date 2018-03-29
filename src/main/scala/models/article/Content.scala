@@ -14,8 +14,9 @@ private[article] case class Content(value: String)
 
   def valid(): ValidationNel[String, Content] = {
     val validRequire: ValidationNel[String, String] =
-      if (!isNotEmpty){ "Error:Contentは必須です".failureNel[String]}
-      else {value.successNel[String]}
+      if (!isNotEmpty) { "Error:Contentは必須です".failureNel[String] } else {
+        value.successNel[String]
+      }
 
     validRequire match {
       case Success(a) => this.successNel
