@@ -1,0 +1,74 @@
+  - name: Deploy pilgrim_cms_containers
+    hosts: localhost
+    gather_facts: false
+    tasks:
+      - docker_service:
+            definition:
+                services: &id001
+                    mongodb:
+                        environment:
+                          - MONGODB_USER=user
+                          - MONGODB_PASS=password!
+                        image: mongo:latest
+                        command: mongod --smallfiles
+                        ports:
+                          - 27017:27017
+                        volumes:
+                          - mongodb-data:/data/db
+                    mongo-express:
+                        environment:
+                          - ME_CONFIG_OPTIONS_EDITORTHEME=ambiance
+                          - ME_CONFIG_BASICAUTH_USERNAME=user
+                          - ME_CONFIG_BASICAUTH_PASSWORD=password!
+                        image: mongo-express:latest
+                        ports:
+                          - 8081:8081
+                        links:
+                          - mongodb:mongo
+                version: '2'
+            state: present
+            project_name: pilgrim_cms_containers
+        tags:
+          - start
+      - docker_service:
+            definition:
+                services: *id001
+                version: '2'
+            state: present
+            project_name: pilgrim_cms_containers
+            restarted: true
+        tags:
+          - restart
+      - docker_service:
+            definition:
+                services: *id001
+                version: '2'
+            state: present
+            project_name: pilgrim_cms_containers
+            stopped: true
+        tags:
+          - stop
+      - docker_service:
+            definition:
+                services: *id001
+                version: '2'
+            state: absent
+            project_name: pilgrim_cms_containers
+            remove_volumes: yes
+        tags:
+          - destroy
+      - docker_image:
+            state: absent
+            force: yes
+            name: mongo:latest
+        tags: destroy
+      - docker_image:
+            state: absent
+            force: yes
+            name: mongo-express:latest
+        tags: destroy
+      - docker_image:
+            state: absent
+            force: yes
+            name: pilgrim_cms_containers-conductor:latest
+        tags: destroy

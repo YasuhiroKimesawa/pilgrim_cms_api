@@ -1,0 +1,15 @@
+{
+  "name": "pilgrim_cms_api",
+  "version": "0.0.0",
+  "description": "",
+  "dependencies": {},
+  "devDependencies": {
+    "pre-commit": "^1.2.2"
+  },
+  "script":{
+    "fmt": "sbt scalafmt"
+  },
+  "pre-commit": [
+    "fmt"
+  ]
+}
