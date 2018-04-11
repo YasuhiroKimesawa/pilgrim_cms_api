@@ -37,6 +37,20 @@ libraryDependencies ++= Seq(
   "com.github.julien-truffaut" %% "monocle-law" % "1.5.0" % "test"
 )
 
+// deduplicate: different file contents found in the following: のエラーが出る対応
+assemblyMergeStrategy in assembly := {
+  case PathList("javax", "servlet", xs @ _*)         => MergeStrategy.first
+  case PathList(ps @ _*) if ps.last endsWith ".properties" => MergeStrategy.first
+  case PathList(ps @ _*) if ps.last endsWith ".xml" => MergeStrategy.first
+  case PathList(ps @ _*) if ps.last endsWith ".types" => MergeStrategy.first
+  case PathList(ps @ _*) if ps.last endsWith ".class" => MergeStrategy.first
+  case "application.conf"                            => MergeStrategy.concat
+  case "unwanted.txt"                                => MergeStrategy.discard
+  case x =>
+    val oldStrategy = (assemblyMergeStrategy in assembly).value
+    oldStrategy(x)
+}
+
 Revolver.settings
 
 SettingKey[Unit]("scalafmtGenerateConfig") :=
