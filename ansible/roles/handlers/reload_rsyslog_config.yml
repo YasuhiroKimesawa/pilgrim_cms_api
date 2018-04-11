@@ -1,0 +1,7 @@
+- name: Check syntax rsyslog config
+  shell: rsyslogd -N1 2>&1 | egrep -v "version [0-9].[0-9].[0-9], config validation run|End of config validation run. Bye." | wc -l
+  register: rsyslog_syntax
+  failed_when: rsyslog_syntax.stdout != "0"
+
+- name: Restart rsyslog daemon ( rsyslog not support reload )
+  service: name=rsyslog state=restarted

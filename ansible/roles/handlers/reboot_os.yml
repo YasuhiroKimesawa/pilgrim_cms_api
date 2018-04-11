@@ -1,0 +1,18 @@
+- name: OS reboot
+  shell: sleep 3 && reboot
+  async: 1
+  poll: 0
+
+- name: Waiting for server to down
+  local_action: shell ping -c 1 target > /dev/null ; echo $?
+  register: ping_state
+  until: ping_state.stdout == "1"
+  retries: 30
+  delay:  1
+
+- name: Waiting for server to up
+  local_action: shell ping -c 1 target
+  register: ping_state
+  until: ping_state.rc == 0
+  retries: 30
+  delay:  10

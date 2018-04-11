@@ -1,0 +1,21 @@
+- name: Create defarult syslog (logrotate.d) backup directory
+  file: path=/home/admin/backup_cnf/etc/logrotate.d state=directory owner=root group=root
+
+- name: Keep default logrotate.conf
+  shell: cp -a /etc/logrotate.conf /home/admin/backup_cnf/etc/logrotate.conf_org
+  args:
+    creates: /home/admin/backup_cnf/etc/logrotate.conf_org
+
+- name: Setting logrotate
+  replace:
+    dest=/etc/logrotate.conf regexp='#compress' replace='compress'
+
+- name: move logrotate script (cron.daily)
+  shell: if [-e /etc/cron.daily/logrotate]; then mv /etc/cron.daily/logrotate /home/admin/bin; fi
+  args:
+    creates: /home/admin/bin/logrotate
+
+- name: Set logrotate task at just 23:59
+  shell: echo "59 23 * * * root /home/admin/bin/logrotate > /dev/null 2>&1" > /etc/cron.d/logrotate_cron
+  args:
+    creates: /etc/cron.d/logrotate_cron

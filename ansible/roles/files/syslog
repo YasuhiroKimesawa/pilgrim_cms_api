@@ -1,0 +1,14 @@
+/var/log/cron/cron
+/var/log/maillog/maillog
+/var/log/messages/messages
+/var/log/secure/secure
+/var/log/spooler/spooler
+{
+    daily
+    rotate 92
+    nocompress
+    sharedscripts
+    postrotate
+        /bin/kill -HUP `cat /var/run/syslogd.pid 2> /dev/null` 2> /dev/null || true
+    endscript
+}

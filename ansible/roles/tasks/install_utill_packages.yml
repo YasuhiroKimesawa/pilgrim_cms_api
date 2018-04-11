@@ -1,0 +1,18 @@
+- name: Install util packages
+  yum: name={{ item }} state=present
+  with_items:
+    - telnet
+    - elinks
+    - whois
+    - screen
+    - ftp
+    - expect
+    - nfs-utils
+    - net-snmp
+    - wget
+    - bash-completion
+    - bind-utils
+    - sysstat
+    - tcpdump
+    - net-tools
+    - postfix

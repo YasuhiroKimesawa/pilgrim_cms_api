@@ -1,0 +1,10 @@
+- name: Check SElinux status
+  shell: getenforce
+  register: selinux_state
+
+- name: Turn off SELinux (when selinux not disabled)
+  shell: setenforce 0
+  when: selinux_state.stdout == "Enforcing"
+
+- name: Disable SELinux on boot
+  replace: dest=/etc/selinux/semanage.conf regexp='^SELINUX=.*' replace='SELINUX=disabled'

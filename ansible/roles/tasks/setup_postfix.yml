@@ -1,0 +1,21 @@
+- name: Create defarult main.cf (postfix) backup directory
+  file: path=/home/admin/backup_cnf/etc/postfix state=directory owner=root group=root
+
+- name: Keep defarult main.cf (postfix)
+  shell: cp -a /etc/postfix/main.cf /home/admin/backup_cnf/etc/postfix/main.cf_org
+  args:
+    creates: /home/admin/backup_cnf/etc/default/main.cf_org
+
+- name: Setting postfix ( protocols only ipv4 )
+  replace:
+    dest=/etc/postfix/main.cf regexp='inet_protocols = all' replace='inet_protocols = ipv4'
+  notify:
+    - Check syntax postfix config
+    - Reload postfix daemon
+
+- name: Setting postfix ( maildir enable )
+  replace:
+    dest=/etc/postfix/main.cf regexp='#home_mailbox = Maildir' replace='home_mailbox = Maildir'
+  notify:
+    - Check syntax postfix config
+    - Reload postfix daemon

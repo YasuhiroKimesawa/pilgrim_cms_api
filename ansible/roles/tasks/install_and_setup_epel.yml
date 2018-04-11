@@ -1,0 +1,14 @@
+- name: install epel yum repo
+  yum: name=epel-release state=present
+
+- name: Create defarult epel repo file backup directory
+  file: path=/home/admin/backup_cnf/etc/yum.repos.d state=directory owner=root group=root
+
+- name: Keep defarult epel repo file
+  shell: cp -a /etc/yum.repos.d/epel.repo /home/admin/backup_cnf/etc/yum.repos.d/epel.repo_org
+  args:
+    creates: /home/admin/backup_cnf/etc/yum.repos.d/epel.repo_org
+
+- name: Setting epel repo file ( default disable )
+  replace:
+    dest=/etc/yum.repos.d/epel.repo regexp='enabled=1' replace='enabled=0'

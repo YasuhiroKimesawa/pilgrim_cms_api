@@ -1,0 +1,17 @@
+- name: install chronyd servicem ntpdate command
+  yum: name={{ item }} state=present
+  with_items:
+    - chrony
+    - ntpdate
+
+- name: Turn on chronyd service
+  service: name=chronyd state=started enabled=yes
+
+- name: Keep defarult chrony.conf
+  shell: cp -a /etc/chrony.conf /etc/chrony.conf_org
+  args:
+    creates: /etc/chrony.conf_org
+
+- name: Put standard chrony config file
+  copy: src=files/chrony.conf dest=/etc/chrony.conf
+  notify: Restart chrony daemon

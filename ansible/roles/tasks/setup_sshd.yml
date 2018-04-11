@@ -1,0 +1,31 @@
+- name: Create sshd_config backup directory
+  file: path=/home/admin/backup_cnf/etc/ssh state=directory owner=root group=root
+
+- name: Keep default sshd_config
+  shell: cp -a /etc/ssh/sshd_config /home/admin/backup_cnf/etc/ssh/sshd_config_org
+  args:
+    creates: /home/admin/backup_cnf/etc/ssh/sshd_config_org
+
+- name: Listen to only IPv4 address setting
+  replace:
+    dest=/etc/ssh/sshd_config regexp='^#ListenAddress 0.0.0.0' replace='ListenAddress 0.0.0.0'
+  notify:
+    - Check syntax sshd config
+    - Reload ssh daemon
+
+#- name: Deny remote login for root user
+#  replace:
+#    dest=/etc/ssh/sshd_config regexp='^#PermitRootLogin yes' replace='PermitRootLogin no'
+#  notify:
+#    - Check syntax sshd config
+#    - Reload ssh daemon
+
+- name: パスワード認証の無効化
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "^PasswordAuthentication"
+    insertafter: "^#PasswordAuthentication"
+    line: "PasswordAuthentication no"
+  notify:
+    - Check syntax sshd config
+    - Reload ssh daemon

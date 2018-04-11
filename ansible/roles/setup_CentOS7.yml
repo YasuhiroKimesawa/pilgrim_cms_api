@@ -1,0 +1,37 @@
+## 実行する設定ファイル (playbook) の大元となるファイル
+---
+
+ - hosts: webserver
+   vars:
+    - SSH_PUBLIC_KEY_PATH: "{{ lookup('env','SSH_PUBLIC_KEY_PATH') }}"
+    - SSH_PORT: "{{ lookup('env','SSH_PORT') }}"
+    - WEBSERVER_IP_ADDRESS: "{{ lookup('env','WEBSERVER_IP_ADDRESS') }}"
+   tasks:
+    - name: Change TimeZone to Asia/Tokyo
+      file: path=/etc/localtime state=link src=/usr/share/zoneinfo/Asia/Tokyo force=yes
+    - import_tasks: tasks/disable_selinux.yml
+    # - import_tasks: tasks/setup_unix_users.yml
+    - import_tasks: tasks/install_utill_packages.yml
+    - import_tasks: tasks/enable_necessary_daemons.yml
+    - import_tasks: tasks/disable_unnecessary_daemons.yml
+    - import_tasks: tasks/disable_ipv6.yml
+    # - import_tasks: tasks/setup_kdump.yml
+    - import_tasks: tasks/setup_sshd.yml
+    - import_tasks: tasks/setup_rsyslog.yml
+    - import_tasks: tasks/setup_logrotate.yml
+    - import_tasks: tasks/setup_postfix.yml
+    - import_tasks: tasks/install_and_setup_chrony.yml
+    - import_tasks: tasks/install_and_setup_epel.yml
+    # 以下アップデートするとVPSが起動しないので対応しない
+    # https://ex1.m-yabe.com/archives/1612
+    # - name: Update all yum package
+    #  yum: name=* state=latest
+    #  notify:
+    #    - OS reboot
+    #    - Waiting for server to down
+    #    - Waiting for server to up
+   handlers:
+    - import_tasks: handlers/reload_sshd_config.yml
+    - import_tasks: handlers/reload_rsyslog_config.yml
+    - import_tasks: handlers/reload_postfix_config.yml
+    - import_tasks: handlers/reload_chrony_config.yml

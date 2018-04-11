@@ -1,3 +1,7 @@
 # env parameters
 export AG_VPC_SECURITY_GROUP_ID=
 export AG_VPC_SUBNET_ID_PRIVATE=
+# ssh public key path
+export SSH_PORT=
+export SSH_PUBLIC_KEY_PATH=
+export WEBSERVER_IP_ADDRESS=

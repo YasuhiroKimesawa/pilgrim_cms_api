@@ -1,0 +1,16 @@
+#- name: Create Administrator user
+#  user:
+#    name: "admin"
+#    uid: 1000
+#    password: "{{ password | password_hash('sha512') }}"
+
+#- name: Create Administration directorys
+#  file: path=/home/admin/{{ item }} state=directory owner=admin group=admin
+#  with_items:
+#    - backup_cnf
+#    - bin
+
+#- name: Grants sudo for Administrator user
+#  shell: echo "%admin  ALL=(ALL)       ALL" > /etc/sudoers.d/admin
+#  args:
+#    creates: /etc/sudoers.d/admin

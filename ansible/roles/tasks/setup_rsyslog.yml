@@ -1,0 +1,71 @@
+- name: Keep default rsyslog.conf
+  shell: cp -a /etc/rsyslog.conf /home/admin/backup_cnf/etc/rsyslog.conf_org
+  args:
+    creates: /home/admin/backup_cnf/etc/rsyslog.conf_org
+
+- name: Setting rsyslog
+  replace:
+    dest=/etc/rsyslog.conf regexp='/var/log/{{ item }}$' replace='/var/log/{{ item }}/{{ item }}'
+  with_items:
+    - messages
+    - secure
+    - maillog
+    - cron
+    - spooler
+
+- name: Create firstboot logs backup directory
+  file: path=/home/admin/backup_cnf/var/log state=directory owner=root group=root
+
+- name: Keep firstboot logs
+  shell: if [-e /var/log/{{ item }}]; then cp -a /var/log/{{ item }} /home/admin/backup_cnf/var/log/{{ item }}_first_boot; fi
+  args:
+    creates: /home/admin/backup_cnf/var/log/{{ item }}_first_boot
+  with_items:
+    - messages
+    - secure
+    - maillog
+    - cron
+    - spooler
+
+- name: Delete old logs path
+  shell: rm -f /var/log/{{ item }}
+  args:
+    creates: /var/log/{{ item }}/{{ item }}
+  with_items:
+    - messages
+    - secure
+    - maillog
+    - cron
+    - spooler
+
+- name: Create new logs path
+  file: path=/var/log/{{ item }} state=directory owner=root group=root
+  with_items:
+    - messages
+    - secure
+    - maillog
+    - cron
+    - spooler
+
+- name: Create empty logs file
+  file: path=/var/log/{{ item }}/{{ item }} state=touch owner=root group=root
+  with_items:
+    - messages
+    - secure
+    - maillog
+    - cron
+    - spooler
+
+- name: Create defarult syslog (logrotate.d) backup directory
+  file: path=/home/admin/backup_cnf/etc/logrotate.d state=directory owner=root group=root
+
+- name: Keep defarult syslog (logrotate.d)
+  shell: cp -a /etc/logrotate.d/syslog /home/admin/backup_cnf/etc/logrotate.d/syslog_org
+  args:
+    creates: /home/admin/backup_cnf/etc/logrotate.d/syslog_org
+
+- name: Put new syslog (logrotate.d) file
+  copy: src=files/syslog dest=/etc/logrotate.d/syslog
+  notify:
+    - Check syntax rsyslog config
+    - Restart rsyslog daemon ( rsyslog not support reload )

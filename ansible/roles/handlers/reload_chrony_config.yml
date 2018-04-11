@@ -1,0 +1,2 @@
+- name: Restart chrony daemon
+  service: name=chronyd state=restarted

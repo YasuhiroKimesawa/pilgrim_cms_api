@@ -1,0 +1,5 @@
+- name: Check syntax postfix config
+  shell: postfix check
+
+- name: Reload postfix daemon
+  service: name=postfix state=reloaded

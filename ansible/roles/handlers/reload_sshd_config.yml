@@ -1,0 +1,5 @@
+- name: Check syntax sshd config
+  shell: sshd -t
+
+- name: Reload ssh daemon
+  service: name=sshd state=reloaded

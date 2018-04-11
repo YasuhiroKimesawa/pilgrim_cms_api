@@ -1,0 +1,15 @@
+- name: Check lvm2-monitor is exist
+  shell: systemctl list-unit-files | grep "lvm2-monitor" >/dev/null ; echo $?
+  register: service_exist
+
+- name: Turn on lvm2-monitor service ( if exist )
+  service: name=lvm2-monitor state=started enabled=yes
+  when: service_exist.stdout == "0"
+
+- name: Check lvm2-lvmetad is exist
+  shell: systemctl list-unit-files | grep "lvm2-lvmetad" >/dev/null ; echo $?
+  register: service_exist
+
+- name: Turn on lvm2-lvmetad service ( if exist )
+  service: name=lvm2-lvmetad state=started enabled=yes
+  when: service_exist.stdout == "0"

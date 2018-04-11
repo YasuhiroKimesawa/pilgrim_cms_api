@@ -1,0 +1,24 @@
+- name: Keep default kdump.confn
+  shell: cp -a /etc/kdump.conf /home/admin/backup_cnf/etc/kdump.conf_org
+  args:
+    creates: /home/admin/backup_cnf/etc/kdump.conf_org
+
+- name: Setting kdump
+  replace:
+    dest=/etc/kdump.conf regexp='#default shell' replace='default reboot'
+
+- name: Create defarult grub backup directory
+  file: path=/home/admin/backup_cnf/etc/default state=directory owner=root group=root
+
+- name: Keep defarult grub
+  shell: cp -a /etc/default/grub /home/admin/backup_cnf/etc/default/grub_org
+  args:
+    creates: /home/admin/backup_cnf/etc/default/grub_org
+
+- name: Setting crashkernel size
+  shell: sed -i "s/\(crashkernel=\)[^ ]*/\1256M/g" /etc/default/grub; echo $?
+  register: grub_conf_update
+
+- name: Generate grub config
+  shell: grub2-mkconfig -o /boot/grub2/grub.cfg
+  when: grub_conf_update.stdout == "0"
