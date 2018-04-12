@@ -7,3 +7,6 @@ build:
         - script:
             name: test
             code: sbt test
+        - script:
+            name: ansible
+            code: ansible-playbook ansible/roles/setup_CentOS7.yml -i ansible/hosts
