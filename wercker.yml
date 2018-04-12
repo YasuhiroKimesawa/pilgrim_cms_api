@@ -2,6 +2,9 @@ box: hseeberger/scala-sbt
 build:
     steps:
         - script:
+            name: pip install
+            code: pip install -r requirements.txt
+        - script:
             name: compile
             code: sbt compile
         - script:
