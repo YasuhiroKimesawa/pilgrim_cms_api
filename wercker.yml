@@ -13,8 +13,7 @@ build:
         - script:
             name: create private key
             code: |
-                    mkdir ~/.ssh
-                    touch ~/.ssh/id_rsa
+                    touch $SSH_PRIVATE_KEY_PATH
                     echo $SSH_PRIVATE_KEY > $SSH_PRIVATE_KEY_PATH
         - script:
             name: ansible
