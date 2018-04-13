@@ -10,6 +10,12 @@ build:
         - script:
             name: test
             code: sbt test
+        # werckerで設定したsshの秘密鍵の環境変数を基に秘密鍵を生成
+        - create-file:
+            name: Create private key
+            filename: $SSH_PRIVATE_KEY_PATH
+            content: $SSH_PRIVATE_KEY
+            overwrite: true
         - script:
             name: ansible
             code: ansible-playbook ansible/roles/setup_CentOS7.yml -i ansible/hosts
