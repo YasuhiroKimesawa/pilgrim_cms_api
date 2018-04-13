@@ -18,4 +18,4 @@ build:
             overwrite: true
         - script:
             name: ansible
-            code: ansible-playbook ansible/roles/setup_CentOS7.yml -i ansible/hosts
+            code: ansible-playbook ansible/roles/setup_CentOS7.yml -i ansible/hosts -vv
