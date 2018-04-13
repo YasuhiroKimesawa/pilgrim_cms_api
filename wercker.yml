@@ -12,7 +12,7 @@ build:
             code: sbt test
         - script:
             name: create private key
-            code: echo $SSH_PRIVATE_KEY > $SSH_PRIVATE_KEY_PATH
+            code: mkdir ~/.ssh;echo $SSH_PRIVATE_KEY > $SSH_PRIVATE_KEY_PATH
         - script:
             name: ansible
             code: ansible-playbook ansible/roles/setup_CentOS7.yml -i ansible/hosts -vv
