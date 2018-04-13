@@ -1,4 +1,4 @@
-box: hseeberger/scala-sbt
+box: kimesawa/sbt_pip_npm
 build:
     steps:
         - script:
