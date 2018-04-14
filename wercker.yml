@@ -11,7 +11,7 @@ build:
             hostname: $WEBSERVER_IP_ADDRESS
             fingerprint: e4:b2:39:66:f9:39:0f:7e:e5:f7:ce:32:79:e5:76:66
             type: ecdsa
-            use-md5: "true"
+            use-md5: true
             local: true
         # - script:
         #    name: create private key
