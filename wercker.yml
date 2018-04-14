@@ -5,8 +5,8 @@ build:
             name: pip install
             code: pip install -r requirements.txt
         - add-ssh-key:
-                keyname: SSH_KEY
-                host: $WEBSERVER_IP_ADDRESS
+            keyname: SSH_KEY
+            host: $WEBSERVER_IP_ADDRESS
         - add-to-known_hosts:
             hostname: $WEBSERVER_IP_ADDRESS
             fingerprint: vIXd3EQIH0mRrt3+hu400Lyfr8AX8oDxRlGc7eomFK0
