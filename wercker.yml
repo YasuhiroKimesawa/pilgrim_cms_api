@@ -12,6 +12,7 @@ build:
             fingerprint: vIXd3EQIH0mRrt3+hu400Lyfr8AX8oDxRlGc7eomFK0
             type: rsa
             local: true
+            port: SSH_PORT
         # - script:
         #    name: create private key
         #    code: echo $SSH_PRIVATE_KEY > $SSH_PRIVATE_KEY_PATH
