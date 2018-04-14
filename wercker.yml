@@ -5,16 +5,8 @@ build:
             name: pip install
             code: pip install -r requirements.txt
         - script:
-            name: compile
-            code: sbt compile
-        - script:
-            name: test
-            code: sbt test
-        - script:
             name: create private key
-            code: |
-                    touch $SSH_PRIVATE_KEY_PATH
-                    echo $SSH_PRIVATE_KEY > $SSH_PRIVATE_KEY_PATH
+            code: echo $SSH_PRIVATE_KEY > $SSH_PRIVATE_KEY_PATH
         - script:
             name: ansible
             code: ansible-playbook ansible/roles/setup_CentOS7.yml -i ansible/hosts -vv
