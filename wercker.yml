@@ -16,4 +16,3 @@ build:
             password: $DOCKER_HUB_PASSWORD
             tag: debug
             repository: kimesawa/result
-            registry: https://registry.hub.docker.com
