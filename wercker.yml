@@ -7,12 +7,11 @@ build:
         - add-ssh-key:
                 keyname: SSH_KEY
                 host: $WEBSERVER_IP_ADDRESS
-        - add-to-known_hosts:
+        - :q:
             hostname: $WEBSERVER_IP_ADDRESS
-            fingerprint: e4:b2:39:66:f9:39:0f:7e:e5:f7:ce:32:79:e5:76:66
+            fingerprint: vIXd3EQIH0mRrt3+hu400Lyfr8AX8oDxRlGc7eomFK0
             type: ecdsa
-            use-md5: true
-            local: true
+            local: rsa
         # - script:
         #    name: create private key
         #    code: echo $SSH_PRIVATE_KEY > $SSH_PRIVATE_KEY_PATH
