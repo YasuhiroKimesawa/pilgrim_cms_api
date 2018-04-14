@@ -9,7 +9,7 @@ build:
                 host: $WEBSERVER_IP_ADDRESS
         - add-to-known_hosts:
             hostname: $WEBSERVER_IP_ADDRESS
-            fingerprint: 75:0f:9e:09:8f:87:12:cc:e3:1f:61:83:5b:b5:d3:40
+            fingerprint: e4:b2:39:66:f9:39:0f:7e:e5:f7:ce:32:79:e5:76:66
         # - script:
         #    name: create private key
         #    code: echo $SSH_PRIVATE_KEY > $SSH_PRIVATE_KEY_PATH
