@@ -9,7 +9,7 @@ build:
             host: $WEBSERVER_IP_ADDRESS
         - add-to-known_hosts:
             hostname: $WEBSERVER_IP_ADDRESS
-            fingerprint: vIXd3EQIH0mRrt3+hu400Lyfr8AX8oDxRlGc7eomFK0
+            fingerprint: $FINGERPRINT
             type: rsa
             local: true
             port: $SSH_PORT
