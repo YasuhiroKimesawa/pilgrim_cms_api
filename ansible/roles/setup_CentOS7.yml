@@ -3,7 +3,7 @@
 
  - hosts: webserver
    vars:
-    - SSH_PRIVATE_KEY_PATH: "{{ lookup('env', 'SSH_PRIVATE_KEY_PATH') }}"
+    # - SSH_PRIVATE_KEY_PATH: "{{ lookup('env', 'SSH_PRIVATE_KEY_PATH') }}"
     - SSH_PORT: "{{ lookup('env','SSH_PORT') }}"
     - WEBSERVER_IP_ADDRESS: "{{ lookup('env','WEBSERVER_IP_ADDRESS') }}"
    tasks:
