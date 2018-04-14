@@ -8,10 +8,12 @@ build:
             name: create private key
             code: echo $SSH_PRIVATE_KEY > $SSH_PRIVATE_KEY_PATH
         - script:
-            name: echo private key
-            code: echo $SSH_PRIVATE_KEY_PATH
-        - script:
             name: ansible
             code: ansible-playbook ansible/roles/setup_CentOS7.yml -i ansible/hosts -vv
     after-steps:
-        - internal/store-container
+        - internal/store-container:
+            username: $DOCKER_HUB_USERNAME
+            password: $DOCKER_HUB_PASSWORD
+            tag: debug
+            repository: kimesawa/sbt_pip_npm
+            registry: https://registry.hub.docker.com
