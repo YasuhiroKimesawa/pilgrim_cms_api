@@ -11,7 +11,7 @@ build:
             name: ansible
             code: ansible-playbook ansible/roles/setup_CentOS7.yml -i ansible/hosts -vv
     after-steps:
-        - internal/store-container:
+        - internal/docker-push:
             username: $DOCKER_HUB_USERNAME
             password: $DOCKER_HUB_PASSWORD
             tag: debug
