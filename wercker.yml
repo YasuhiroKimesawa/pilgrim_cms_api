@@ -15,5 +15,5 @@ build:
             username: $DOCKER_HUB_USERNAME
             password: $DOCKER_HUB_PASSWORD
             tag: debug
-            repository: kimesawa/sbt_pip_npm
+            repository: kimesawa/result
             registry: https://registry.hub.docker.com
