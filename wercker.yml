@@ -4,9 +4,15 @@ build:
         - script:
             name: pip install
             code: pip install -r requirements.txt
-        - script:
-            name: create private key
-            code: echo $SSH_PRIVATE_KEY > $SSH_PRIVATE_KEY_PATH
+        - add-ssh-key:
+                keyname: SSH_KEY
+                host: $WEBSERVER_IP_ADDRESS
+        - add-to-known_hosts:
+            hostname: $WEBSERVER_IP_ADDRESS
+            fingerprint: 75:0f:9e:09:8f:87:12:cc:e3:1f:61:83:5b:b5:d3:40
+        # - script:
+        #    name: create private key
+        #    code: echo $SSH_PRIVATE_KEY > $SSH_PRIVATE_KEY_PATH
         - script:
             name: ansible
             code: ansible-playbook ansible/roles/setup_CentOS7.yml -i ansible/hosts -vv
