@@ -49,5 +49,3 @@ deploy-ansible:
              channel: "ci_cms"
              username: "木目沢 康廣"
              branch: master
-             passed_msg: "ビルド成功時のメッセージ"
-             failed_msg: "ビルド失敗時のメッセージ"
