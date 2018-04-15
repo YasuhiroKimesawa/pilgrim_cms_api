@@ -38,9 +38,16 @@ deploy-ansible:
         - script:
             name: ansible
             code: ansible-playbook ansible/roles/setup_CentOS7.yml -i ansible/hosts -vv
-    #after-steps:
+    after-steps:
     #    - internal/docker-push:
     #        username: $DOCKER_HUB_USERNAME
     #        password: $DOCKER_HUB_PASSWORD
     #        tag: debug
     #        repository: kimesawa/result
+          - theollyr/slack-notifier@1.3.1:
+             url: $SLACK_URL
+             channel: "#ci-cms"
+             username: "木目沢 康廣"
+             branch: master
+             passed_msg: "ビルド成功時のメッセージ"
+             failed_msg: "ビルド失敗時のメッセージ"
