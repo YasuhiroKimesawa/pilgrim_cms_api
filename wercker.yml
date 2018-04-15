@@ -1,5 +1,9 @@
 box: kimesawa/sbt_pip_npm
 ready:
+    steps:
+        - script:
+            name: ready
+            code: echo "ready"
 sbt-build:
     steps:
         - script:
