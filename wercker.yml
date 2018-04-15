@@ -1,11 +1,10 @@
 box: kimesawa/sbt_pip_npm
 ready:
+sbt-build:
     steps:
         - script:
             name: pip install
             code: pip install -r requirements.txt
-sbt-build:
-    steps:
         - script:
             name: npm install
             code: npm install
@@ -20,6 +19,9 @@ sbt-build:
             code: sbt assembly
 deploy-ansible:
     steps:
+        - script:
+            name: pip install
+            code: pip install -r ansible/requirements.txt
         - add-ssh-key:
             keyname: SSH_KEY
             host: $WEBSERVER_IP_ADDRESS
