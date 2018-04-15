@@ -3,9 +3,10 @@
 
  - hosts: webserver
    vars:
-    # - SSH_PRIVATE_KEY_PATH: "{{ lookup('env', 'SSH_PRIVATE_KEY_PATH') }}"
     - SSH_PORT: "{{ lookup('env','SSH_PORT') }}"
     - WEBSERVER_IP_ADDRESS: "{{ lookup('env','WEBSERVER_IP_ADDRESS') }}"
+    - WERCKER_TOKEN: "{{ lookup('env','WERCKER_TOKEN') }}"
+    - WERCKER_PIPELINE_ID: "{{ lookup('env','WERCKER_PIPELINE_ID') }}"
    tasks:
     - name: Change TimeZone to Asia/Tokyo
       file: path=/etc/localtime state=link src=/usr/share/zoneinfo/Asia/Tokyo force=yes
@@ -22,6 +23,7 @@
     - import_tasks: tasks/setup_postfix.yml
     - import_tasks: tasks/install_and_setup_chrony.yml
     - import_tasks: tasks/install_and_setup_epel.yml
+    - import_tasks: tasks/cron_run_wercker.yml
     # 以下アップデートするとVPSが起動しないので対応しない
     # https://ex1.m-yabe.com/archives/1612
     # - name: Update all yum package
@@ -35,3 +37,4 @@
     - import_tasks: handlers/reload_rsyslog_config.yml
     - import_tasks: handlers/reload_postfix_config.yml
     - import_tasks: handlers/reload_chrony_config.yml
+    - import_tasks: handlers/reload_bash_profile.yml

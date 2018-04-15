@@ -1,5 +1,7 @@
 # ssh
 export SSH_PORT=
-export SSH_PUBLIC_KEY_PATH=
-export SSH_PRIVATE_KEY_PATH=
 export WEBSERVER_IP_ADDRESS=
+
+# run wercker
+export WERCKER_TOKEN=
+export WERCKER_PIPELINE_ID=
