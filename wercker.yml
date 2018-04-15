@@ -1,9 +1,25 @@
 box: kimesawa/sbt_pip_npm
-build:
+ready:
     steps:
         - script:
             name: pip install
             code: pip install -r requirements.txt
+sbt-build:
+    steps:
+        - script:
+            name: npm install
+            code: npm install
+        - script:
+            name: sbt test compile
+            code: cat /dev/null | sbt test:compile
+        - script:
+            name: sbt test
+            code: cat /dev/null | sbt test:test
+        - script:
+            name: sbt build
+            code: sbt assembly
+deploy-ansible:
+    steps:
         - add-ssh-key:
             keyname: SSH_KEY
             host: $WEBSERVER_IP_ADDRESS
@@ -13,15 +29,12 @@ build:
             type: rsa
             local: true
             port: $SSH_PORT
-        # - script:
-        #    name: create private key
-        #    code: echo $SSH_PRIVATE_KEY > $SSH_PRIVATE_KEY_PATH
         - script:
             name: ansible
             code: ansible-playbook ansible/roles/setup_CentOS7.yml -i ansible/hosts -vv
-    after-steps:
-        - internal/docker-push:
-            username: $DOCKER_HUB_USERNAME
-            password: $DOCKER_HUB_PASSWORD
-            tag: debug
-            repository: kimesawa/result
+    #after-steps:
+    #    - internal/docker-push:
+    #        username: $DOCKER_HUB_USERNAME
+    #        password: $DOCKER_HUB_PASSWORD
+    #        tag: debug
+    #        repository: kimesawa/result
