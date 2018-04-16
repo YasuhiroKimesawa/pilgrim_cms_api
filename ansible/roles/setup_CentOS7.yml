@@ -23,7 +23,11 @@
     - import_tasks: tasks/setup_postfix.yml
     - import_tasks: tasks/install_and_setup_chrony.yml
     - import_tasks: tasks/install_and_setup_epel.yml
+    - import_tasks: tasks/install_and_setup_cron.yml
     - import_tasks: tasks/cron_run_wercker.yml
+    - import_tasks: tasks/install_and_setup_gcc.yml
+    - import_tasks: tasks/install_and_setup_openssl.yml
+    - import_tasks: tasks/install_and_setup_curl.yml
     # 以下アップデートするとVPSが起動しないので対応しない
     # https://ex1.m-yabe.com/archives/1612
     # - name: Update all yum package

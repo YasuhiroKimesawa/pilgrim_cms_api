@@ -1,0 +1,8 @@
+- name: Install CronieNoAnacron
+  yum: name=cronie-noanacron state=latest
+
+- name: Remove CronieAnacron
+  yum: name=cronie-anacron state=latest
+
+- name: Turn on crond service
+  service: name=crond state=started enabled=yes

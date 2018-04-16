@@ -1,0 +1,35 @@
+## opensslのソースファイルを取得済みか確認
+- name: check exist openssl source file
+  shell: ls -l /usr/local/src/openssl-1.1.1-pre4.tar.gz
+  ignore_errors: True
+  register: result1
+
+
+## opensslのソースファイル取得。ただし、すでに取得済みならスキップ
+- name: get openssl source file
+  shell: chdir=/usr/local/src wget https://www.openssl.org/source/openssl-1.1.0h.tar.gz
+  when: result1|failed
+
+## opensslのソースインストールを解凍
+- name: get openssl source file
+  shell: chdir=/usr/local/src tar -zxf openssl-1.1.0h.tar.gz
+  when: result1|failed
+
+## opensslがインストールされているか確認
+- name: check openssl install
+  shell: openssl version
+  ignore_errors: True
+  register: result2
+
+## opensslのインストール。ただしすでにopensslがインストールされいたらスキップ
+- name: comfigure openssl
+  shell: chdir=/usr/local/src/openssl-1.1.0h ./config -fPIC shared --prefix=/usr
+  when: "'OpenSSL 1.1.0h' not in result2.stdout"
+
+- name: make openssl
+  shell: chdir=/usr/local/src/openssl-1.1.0h make
+  when: "'OpenSSL 1.1.0h' not in result2.stdout"
+
+- name: install openssl
+  shell: chdir=/usr/local/src/openssl-1.1.0h make install
+  when: "'OpenSSL 1.1.0h' not in result2.stdout"

@@ -1,0 +1,38 @@
+## curlのソースファイルを取得済みか確認
+- name: check exist curl source file
+ shell: ls -l /usr/local/src/curl-7.58.0.tar.bz2
+ ignore_errors: True
+ register: result1
+
+## curlのソースファイル取得。ただし、すでに取得済みならスキップ
+- name: get curl source file
+ shell: chdir=/usr/local/src wget https://curl.mirror.anstey.ca/curl-7.58.0.tar.bz2
+ when: result1|failed
+
+## curlのソースインストールを解凍
+- name: get curl source file
+ shell: chdir=/usr/local/src tar xvf curl-7.58.0.tar.bz2
+ when: result1|failed
+
+## curlがインストールされているか確認
+- name: check curl install
+ shell: curl --version
+ ignore_errors: True
+ register: result2
+
+## curlのインストール。ただしすでにcurlがインストールされいたらスキップ
+- name: expand curl src
+ shell: chdir=/usr/local/src tar xf curl-7.58.0.tar.bz2
+ when: "'curl 7.58.0' not in result2.stdout"
+
+- name: comfigure curl
+ shell: chdir=/usr/local/src/curl-7.58.0 ./configure --with-ssl=/usr --enable-libcurl-option
+ when: "'curl 7.58.0' not in result2.stdout"
+
+- name: make curl
+ shell: chdir=/usr/local/src/curl-7.58.0 make
+ when: "'curl 7.58.0' not in result2.stdout"
+
+- name: install curl
+ shell: chdir=/usr/local/src/curl-7.58.0 make install
+ when: "'curl 7.58.0' not in result2.stdout"
