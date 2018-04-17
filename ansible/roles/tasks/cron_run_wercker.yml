@@ -16,11 +16,14 @@
 - name: set cron_run_wercker_file
   copy: src=files/run_wercker.sh dest=~/run_wercker.sh
 
+- name: set cron_run_wercker_file chmod
+  file: path=~/run_wercker.sh mode="u+rw,g+rx,o+rx"
+
 - name: set cron run_wercker
   cron:
     name: run_wercker.sh
     job: ~/run_wercker.sh
-    minute: "*"
+    minute: "00"
     hour: "11"
     day: "*"
     month: "*"
