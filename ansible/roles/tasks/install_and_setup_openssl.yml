@@ -4,7 +4,6 @@
   ignore_errors: True
   register: result1
 
-
 ## opensslのソースファイル取得。ただし、すでに取得済みならスキップ
 - name: get openssl source file
   shell: chdir=/usr/local/src wget https://www.openssl.org/source/openssl-1.1.0h.tar.gz
