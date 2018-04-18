@@ -23,8 +23,8 @@
   cron:
     name: run_wercker.sh
     job: ~/run_wercker.sh
-    minute: "00"
-    hour: "11"
+    minute: "30"
+    hour: "16"
     day: "*"
     month: "*"
     weekday: "*"
