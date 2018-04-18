@@ -1,20 +1,21 @@
-- name: update bash_profile
-  lineinfile: >-
-      dest='~/.bash_profile'
-      state=present
-      backrefs=no
-      regexp='{{ item.regexp }}'
-      line='{{ item.line }}'
-  with_items:
-    - regexp: '^export WERCKER_TOKEN='
-      line: 'export WERCKER_TOKEN={{WERCKER_TOKEN}}'
-    - regexp: '^export WERCKER_PIPELINE_ID='
-      line: 'export WERCKER_PIPELINE_ID={{WERCKER_PIPELINE_ID}}'
-  notify:
-      - Restart bash_profile
+# templateを使うとfileを変数展開できるので以下不要
+#- name: update bash_profile
+#  lineinfile: >-
+#      dest='~/.bash_profile'
+#      state=present
+#      backrefs=no
+#      regexp='{{ item.regexp }}'
+#      line='{{ item.line }}'
+#  with_items:
+#    - regexp: '^export WERCKER_TOKEN='
+#      line: 'export WERCKER_TOKEN={{WERCKER_TOKEN}}'
+#    - regexp: '^export WERCKER_PIPELINE_ID='
+#      line: 'export WERCKER_PIPELINE_ID={{WERCKER_PIPELINE_ID}}'
+#  notify:
+#      - Restart bash_profile
 
 - name: set cron_run_wercker_file
-  copy: src=files/run_wercker.sh dest=~/run_wercker.sh
+  template: src=files/run_wercker.sh dest=~/run_wercker.sh
 
 - name: set cron_run_wercker_file chmod
   file: path=~/run_wercker.sh mode="u=rxw,g=rx,o=rx"
@@ -23,8 +24,8 @@
   cron:
     name: run_wercker.sh
     job: ~/run_wercker.sh
-    minute: "10"
-    hour: "17"
+    minute: "00"
+    hour: "11"
     day: "*"
     month: "*"
     weekday: "*"
