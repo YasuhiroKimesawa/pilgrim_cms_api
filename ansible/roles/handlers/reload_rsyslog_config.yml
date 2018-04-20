@@ -4,4 +4,4 @@
   failed_when: rsyslog_syntax.stdout != "0"
 
 - name: Restart rsyslog daemon ( rsyslog not support reload )
-  service: name=rsyslog state=restarted
+  systemd: name=rsyslog state=restarted

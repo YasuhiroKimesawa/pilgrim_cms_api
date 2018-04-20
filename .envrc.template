@@ -5,3 +5,7 @@ export WEBSERVER_IP_ADDRESS=
 # run wercker
 export WERCKER_TOKEN=
 export WERCKER_PIPELINE_ID=
+
+# Let's Encrypt
+export WEB_DOMAIN=
+export WEB_DOMAIN_MAIL_ADDRESS=

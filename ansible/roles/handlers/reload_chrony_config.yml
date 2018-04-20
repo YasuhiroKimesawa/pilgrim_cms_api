@@ -1,2 +1,2 @@
 - name: Restart chrony daemon
-  service: name=chronyd state=restarted
+  systemd: name=chronyd state=restarted

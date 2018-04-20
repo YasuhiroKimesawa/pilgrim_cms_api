@@ -1,0 +1,36 @@
+- name: remove old docker
+  yum: name={{ item }} state=removed
+  with_items:
+    - docker
+    - docker-common
+    - container-selinux
+    - docker-selinux
+    - docker-engine
+
+- name: Install docker-ce.repo
+  shell: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo;yum makecache fast
+
+- name: Install docker
+  yum: name=docker-ce.x86_64 state=present
+  notify:
+      - Start docker daemon
+
+## docker-composeのソースファイルを取得済みか確認
+- name: check exist docker-compose source file
+  shell: ls -l ~/docker-compose
+  ignore_errors: True
+  register: result1
+
+- name: download docker-compose
+  shell: curl -L https://github.com/docker/compose/releases/download/1.12.0/docker-compose-`uname -s`-`uname -m` > docker-compose
+  when: result1|failed
+
+- name: move docker-compose
+  shell: mv docker-compose /usr/local/bin/docker-compose
+  when: result1|failed
+
+- name: chmod docker-compose
+  file: path=/usr/local/bin/docker-compose state=file owner=root group=root mode="u=x,g=x,o=x"
+  when: result1|failed
+
+

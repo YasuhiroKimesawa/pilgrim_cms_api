@@ -2,7 +2,7 @@
   file: path=/home/admin/backup_cnf/etc/logrotate.d state=directory owner=root group=root
 
 - name: Keep default logrotate.conf
-  shell: cp -a /etc/logrotate.conf /home/admin/backup_cnf/etc/logrotate.conf_org
+  shell: if [-e /etc/logrotate.conf]; cp -a /etc/logrotate.conf /home/admin/backup_cnf/etc/logrotate.conf_org
   args:
     creates: /home/admin/backup_cnf/etc/logrotate.conf_org
 

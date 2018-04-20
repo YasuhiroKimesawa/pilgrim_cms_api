@@ -1,0 +1,57 @@
+version: '2'
+
+networks:
+  default:
+    driver: bridge
+
+services:
+  #nginx:
+  #  environment:
+  #    TZ: Asia/Tokyo
+  #  build: ./nginx
+  #  volumes:
+  #   # - ./logs/nginx/:/var/log/nginx/
+  #    - ./nginx/config/nginx.conf:/etc/nginx/nginx.conf
+  #   # - /home/example/www/:/www/
+  #    # - /etc/letsencrypt/live/exapmle.com/cert.pem:/etc/nginx/cert.pem
+  #    # - /etc/letsencrypt/live/exapmle.com/privkey.pem:/etc/nginx/private.pem
+  #  hostname: nginx
+  #  ports:
+  #    - "80:80"
+  #    - "443:443"
+  https-portal:
+     image: steveltn/https-portal:1
+     ports:
+       - '80:80'
+       - '443:443'
+     restart: always
+     environment:
+       DOMAINS: 'pilgrim-liestyle.localhost.com'
+       #STAGE: 'local'
+       STAGE: 'staging'
+       # FORCE_RENEW: 'true'
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    environment:
+      -  'MONGODB_USER=user'
+      -  'MONGODB_PASS=password!'
+    volumes:
+      - 'mongodb-data:/data/db'
+    ports:
+      - '27017:27017'
+    command: mongod --smallfiles
+  mongo-express:
+    container_name: mongo-express
+    links:
+      - 'mongodb:mongo'
+    ports:
+      - '8081:8081'
+    environment:
+      - 'ME_CONFIG_OPTIONS_EDITORTHEME=ambiance'
+      - 'ME_CONFIG_BASICAUTH_USERNAME=user'
+      - 'ME_CONFIG_BASICAUTH_PASSWORD=password!'
+    image: mongo-express
+
+volumes:
+  mongodb-data: {}

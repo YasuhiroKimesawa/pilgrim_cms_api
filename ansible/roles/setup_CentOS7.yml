@@ -7,6 +7,8 @@
     - WEBSERVER_IP_ADDRESS: "{{ lookup('env','WEBSERVER_IP_ADDRESS') }}"
     - WERCKER_TOKEN: "{{ lookup('env','WERCKER_TOKEN') }}"
     - WERCKER_PIPELINE_ID: "{{ lookup('env','WERCKER_PIPELINE_ID') }}"
+    - WEB_DOMAIN: "{{ lookup('env','WEB_DOMAIN') }}"
+    - WEB_DOMAIN_MAIL_ADDRESS: "{{ lookup('env','WEB_DOMAIN_MAIL_ADDRESS') }}"
    tasks:
     - name: Change TimeZone to Asia/Tokyo
       file: path=/etc/localtime state=link src=/usr/share/zoneinfo/Asia/Tokyo force=yes
@@ -15,19 +17,21 @@
     - import_tasks: tasks/install_utill_packages.yml
     - import_tasks: tasks/enable_necessary_daemons.yml
     - import_tasks: tasks/disable_unnecessary_daemons.yml
-    - import_tasks: tasks/disable_ipv6.yml
+    # - import_tasks: tasks/disable_ipv6.yml
     # - import_tasks: tasks/setup_kdump.yml
-    - import_tasks: tasks/setup_sshd.yml
-    - import_tasks: tasks/setup_rsyslog.yml
-    - import_tasks: tasks/setup_logrotate.yml
-    - import_tasks: tasks/setup_postfix.yml
+    # - import_tasks: tasks/setup_sshd.yml
+    #- import_tasks: tasks/setup_rsyslog.yml
+    # - import_tasks: tasks/setup_logrotate.yml
+    # - import_tasks: tasks/setup_postfix.yml
     - import_tasks: tasks/install_and_setup_chrony.yml
     - import_tasks: tasks/install_and_setup_epel.yml
     - import_tasks: tasks/install_and_setup_cron.yml
     - import_tasks: tasks/cron_run_wercker.yml
-    - import_tasks: tasks/install_and_setup_gcc.yml
     - import_tasks: tasks/install_and_setup_openssl.yml
     - import_tasks: tasks/install_and_setup_curl.yml
+    - import_tasks: tasks/run_docker_compose.yml
+    #- import_tasks: tasks/install_and_setup_git.yml
+    #- import_tasks: tasks/install_lets_encrypt.yml
     # 以下アップデートするとVPSが起動しないので対応しない
     # https://ex1.m-yabe.com/archives/1612
     # - name: Update all yum package
@@ -42,3 +46,5 @@
     - import_tasks: handlers/reload_postfix_config.yml
     - import_tasks: handlers/reload_chrony_config.yml
     - import_tasks: handlers/reload_bash_profile.yml
+    - import_tasks: handlers/reload_docker.yml
+    #- import_tasks: handlers/reload_httpd_config.yml

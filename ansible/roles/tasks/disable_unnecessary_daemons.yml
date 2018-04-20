@@ -93,3 +93,11 @@
 - name: Turn off ntpd service ( if exist )
   service: name=ntpd state=stopped enabled=no
   when: service_exist.stdout == "0"
+
+- name: Check httpd is exist
+  shell: systemctl list-unit-files | grep -w "httpd" >/dev/null ; echo $?
+  register: service_exist
+
+- name: Turn off httpd service ( if exist )
+  service: name=httpd state=stopped enabled=no
+  when: service_exist.stdout == "0"

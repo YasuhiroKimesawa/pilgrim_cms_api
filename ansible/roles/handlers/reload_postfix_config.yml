@@ -2,4 +2,4 @@
   shell: postfix check
 
 - name: Reload postfix daemon
-  service: name=postfix state=reloaded
+  systemd: name=postfix state=reloaded

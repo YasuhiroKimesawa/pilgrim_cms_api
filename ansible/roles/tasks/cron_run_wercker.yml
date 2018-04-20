@@ -20,12 +20,17 @@
 - name: set cron_run_wercker_file chmod
   file: path=~/run_wercker.sh mode="u=rxw,g=rx,o=rx"
 
+- cron:
+    name: PATH
+    env: yes
+    value: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
+
 - name: set cron run_wercker
   cron:
     name: run_wercker.sh
     job: ~/run_wercker.sh
-    minute: "00"
-    hour: "11"
+    minute: "18"
+    hour: "00"
     day: "*"
     month: "*"
     weekday: "*"

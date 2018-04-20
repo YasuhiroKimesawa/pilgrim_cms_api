@@ -1,0 +1,27 @@
+- name: Install certbot,certbot-apache
+  yum: name=certbot,certbot-apache state=present
+
+- name: Install python-certbot-apache
+  yum: name=python-certbot-apache state=present
+
+- name: Set config to stop and restart with running certbot
+  become: yes
+  replace:
+    dest: /etc/sysconfig/certbot
+    regexp: "{{ item.regexp }}"
+    replace: "{{ item.replace }}"
+    backup: yes
+  with_items:
+    - {'regexp' : '^PRE_HOOK=""$', 'replace' : 'PRE_HOOK="--pre-hook ''systemctl stop httpd''"'}
+    - {'regexp' : '^POST_HOOK=""$', 'replace' : 'POST_HOOK="--post-hook ''systemctl restart httpd''"'}
+    - {'regexp' : '^RENEW_HOOK=""$', 'replace' : 'RENEW_HOOK="--renew-hook ''systemctl restart httpd''"'}
+
+- name: Check privkey.pem exists
+  stat: path=/etc/letsencrypt/live/{{ WEB_DOMAIN }}/privkey.pem
+  register: fm
+
+- name: Get certs
+  become: yes
+  shell: |
+    certbot certonly -m {{ WEB_DOMAIN_MAIL_ADDRESS }} --agree-tos --non-interactive $* --webroot -w /var/www/html -d {{ WEB_DOMAIN }}
+  when: not fm.stat.exists

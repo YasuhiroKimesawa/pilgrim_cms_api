@@ -1,11 +1,11 @@
 - name: Install util packages
   yum: name={{ item }} state=present
   with_items:
-    - telnet
+    #- telnet
     - elinks
     - whois
     - screen
-    - ftp
+    #- ftp
     - expect
     - nfs-utils
     - net-snmp
@@ -16,3 +16,7 @@
     - tcpdump
     - net-tools
     - postfix
+    - gcc
+    - libselinux-python
+    - bzip2
+    - yum-utils

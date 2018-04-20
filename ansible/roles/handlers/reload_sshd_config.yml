@@ -2,4 +2,4 @@
   shell: sshd -t
 
 - name: Reload ssh daemon
-  service: name=sshd state=reloaded
+  systemd: name=sshd state=reloaded

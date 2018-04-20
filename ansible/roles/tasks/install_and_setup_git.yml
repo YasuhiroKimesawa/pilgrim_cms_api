@@ -1,0 +1,47 @@
+- name: install git require
+  yum: name={{ item }} state=present
+  with_items:
+    - expat-devel
+    - gettext-devel
+    - zlib-devel
+    - perl-ExtUtils-MakeMaker
+    - autoconf
+
+## gitのソースファイルを取得済みか確認
+- name: check exist git source file
+  shell: ls -l /usr/local/src/git-2.9.5.tar.gz
+  ignore_errors: True
+  register: result1
+
+## gitのソースファイル取得。ただし、すでに取得済みならスキップ
+- name: get git source file
+  shell: chdir=/usr/local/src wget https://www.kernel.org/pub/software/scm/git/git-2.9.5.tar.gz
+  when: result1|failed
+
+## gitのソースインストールを解凍
+- name: get git source file
+  shell: chdir=/usr/local/src tar vfx git-2.9.5.tar.gz
+  when: result1|failed
+
+## gitがインストールされているか確認
+- name: check git install
+  shell: git --version
+  ignore_errors: True
+  register: result2
+
+## gitのインストール。ただしすでにgitがインストールされいたらスキップ
+- name: make configure git
+  shell: chdir=/usr/local/src/git-2.9.5 make configure
+  when: "'git version 2.9.5' not in result2.stdout"
+
+- name: comfigure git
+  shell: chdir=/usr/local/src/git-2.9.5 ./configure --prefix=/usr
+  when: "'git version 2.9.5' not in result2.stdout"
+
+- name: make git
+  shell: chdir=/usr/local/src/git-2.9.5 make all
+  when: "'git version 2.9.5' not in result2.stdout"
+
+- name: install git
+  shell: chdir=/usr/local/src/git-2.9.5 make install
+  when: "'git version 2.9.5' not in result2.stdout"

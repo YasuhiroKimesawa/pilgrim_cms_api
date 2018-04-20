@@ -1,3 +1,4 @@
+# LVM利用時の監視用デーモン。
 - name: Check lvm2-monitor is exist
   shell: systemctl list-unit-files | grep "lvm2-monitor" >/dev/null ; echo $?
   register: service_exist
