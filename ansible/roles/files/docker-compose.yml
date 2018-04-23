@@ -1,9 +1,5 @@
 version: '2'
 
-networks:
-  default:
-    driver: bridge
-
 services:
   #nginx:
   #  environment:
@@ -26,10 +22,12 @@ services:
        - '443:443'
      restart: always
      environment:
-       DOMAINS: 'pilgrim-liestyle.localhost.com'
-       #STAGE: 'local'
-       STAGE: 'staging'
+       DOMAINS: ${WEB_DOMAIN}
+       STAGE: ${HTTPS_PORTAL_STAGE}
        # FORCE_RENEW: 'true'
+     volumes:
+       - /var/www/vhosts/${WEB_DOMAIN}:/var/www/vhosts/${WEB_DOMAIN}
+
   mongodb:
     image: mongo:latest
     container_name: mongodb

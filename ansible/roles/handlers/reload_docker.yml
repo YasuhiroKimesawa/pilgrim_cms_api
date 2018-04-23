@@ -1,2 +1,2 @@
 - name: Start docker daemon
-  systemd: name=docker state=started enabled=true
+  systemd: name=docker state=restarted enabled=true

@@ -1,0 +1,64 @@
+- name: get python version
+  shell: python --version
+  register: python_version
+
+- name: Install ius
+  yum: name=https://centos7.iuscommunity.org/ius-release.rpm state=latest
+  when: python_version.stdout != 'Python 3.6.4'
+
+- name: install python require
+  yum: name={{ item }} state=present enablerepo=epel
+  with_items:
+    - python36u
+    - python36u-libs
+    - python36u-devel
+    - python36u-pip
+
+- name: python2 unsynbolic link
+  file:
+     path: "/usr/bin/python"
+     state: absent
+  when: python_version.stdout != 'Python 3.6.4'
+
+- name: python3 synbolic link
+  file:
+     src: /usr/bin/python3.6
+     dest: /usr/bin/python
+     state: link
+  when: python_version.stdout != 'Python 3.6.4'
+
+- name: pip3 synbolic link
+  file:
+     src: /usr/bin/pip3.6
+     dest: /usr/bin/pip
+     state: link
+  when: python_version.stdout != 'Python 3.6.4'
+
+- name: which pip
+  shell: which pip
+  register: which_pip
+
+- name: pip change for python3
+  replace: dest={{ which_pip.stdout }} regexp='^#!/usr/bin/python2' replace='#!/usr/bin/python'
+  when: python_version.stdout != 'Python 3.6.4'
+
+- name: yum change for python2
+  lineinfile:
+    dest: /usr/bin/yum
+    regexp: "^#!/usr/bin/python"
+    line: "#!/usr/bin/python2"
+  when: python_version.stdout != 'Python 3.6.4'
+
+- name: yum-config-manager change for python2
+  lineinfile:
+    dest: /usr/bin/yum-config-manager
+    regexp: "^#!/usr/bin/python -tt"
+    line: "#!/usr/bin/python2 -tt"
+  when: python_version.stdout != 'Python 3.6.4'
+
+- name: urlgrabber-ext-down change for python2
+  lineinfile:
+    dest: /usr/libexec/urlgrabber-ext-down
+    regexp: "^#! /usr/bin/python"
+    line: "#! /usr/bin/python2"
+  when: python_version.stdout != 'Python 3.6.4'

@@ -27,10 +27,57 @@
 
 - name: move docker-compose
   shell: mv docker-compose /usr/local/bin/docker-compose
+  notify:
+     - Start docker daemon
   when: result1|failed
 
 - name: chmod docker-compose
   file: path=/usr/local/bin/docker-compose state=file owner=root group=root mode="u=x,g=x,o=x"
   when: result1|failed
 
+## docker-py
+#- name: install docker-py/compose
+#  pip:
+#    name: "{{ item }}"
+#  with_items:
+#    - docker-py
+#    - docker-compose
+
+# 起動
+- name: http file directory
+  file: path=/var/www/vhosts/{{ WEB_DOMAIN }} state=directory owner=root group=root mode=0755
+
+- name: http file dummy
+  copy: src=files/dummy.html dest=/var/www/vhosts/{{ WEB_DOMAIN }}/dummy.html
+
+- name: copy compose file to remote server
+  template: src=files/docker-compose.yml dest=~/docker-compose.yml
+  notify:
+    - Start docker daemon
+
+
+#- name: run docker compose
+#  docker_service:
+#    project_src: /root
+#    state: present
+
+- name: update bash_profile
+  lineinfile: >-
+      dest='~/.bash_profile'
+      state=present
+      backrefs=no
+      regexp='{{ item.regexp }}'
+      line='{{ item.line }}'
+  with_items:
+    - regexp: '^export WEB_DOMAIN='
+      line: 'export WEB_DOMAIN={{WEB_DOMAIN}}'
+    - regexp: '^export HTTPS_PORTAL_STAGE='
+      line: 'export HTTPS_PORTAL_STAGE={{HTTPS_PORTAL_STAGE}}'
+  notify:
+    - Restart bash_profile
+
+- name: run docker compose
+  shell: docker-compose up -d
+  args:
+    chdir: /root
 

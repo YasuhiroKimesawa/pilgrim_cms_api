@@ -9,6 +9,10 @@
     - WERCKER_PIPELINE_ID: "{{ lookup('env','WERCKER_PIPELINE_ID') }}"
     - WEB_DOMAIN: "{{ lookup('env','WEB_DOMAIN') }}"
     - WEB_DOMAIN_MAIL_ADDRESS: "{{ lookup('env','WEB_DOMAIN_MAIL_ADDRESS') }}"
+    - HTTPS_PORTAL_STAGE: "{{ lookup('env','HTTPS_PORTAL_STAGE') }}"
+   environment:
+      WEB_DOMAIN: "{{ lookup('env','WEB_DOMAIN') }}"
+      HTTPS_PORTAL_STAGE: "{{ lookup('env','HTTPS_PORTAL_STAGE') }}"
    tasks:
     - name: Change TimeZone to Asia/Tokyo
       file: path=/etc/localtime state=link src=/usr/share/zoneinfo/Asia/Tokyo force=yes
@@ -29,6 +33,8 @@
     - import_tasks: tasks/cron_run_wercker.yml
     - import_tasks: tasks/install_and_setup_openssl.yml
     - import_tasks: tasks/install_and_setup_curl.yml
+    - import_tasks: tasks/install_and_setup_python.yml
+    - import_tasks: tasks/set_iptables.yml
     - import_tasks: tasks/run_docker_compose.yml
     #- import_tasks: tasks/install_and_setup_git.yml
     #- import_tasks: tasks/install_lets_encrypt.yml
