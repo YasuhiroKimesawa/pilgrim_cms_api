@@ -17,7 +17,7 @@
 
 ## docker-composeのソースファイルを取得済みか確認
 - name: check exist docker-compose source file
-  shell: ls -l ~/docker-compose
+  shell: ls -l /usr/local/bin/docker-compose
   ignore_errors: True
   register: result1
 
