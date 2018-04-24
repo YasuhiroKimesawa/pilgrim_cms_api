@@ -1,3 +1,9 @@
+## docker-composeのソースファイルを取得済みか確認
+- name: check exist docker-compose source file
+  shell: ls -l /usr/local/bin/docker-compose
+  ignore_errors: True
+  register: result1
+
 - name: remove old docker
   yum: name={{ item }} state=removed
   with_items:
@@ -6,20 +12,17 @@
     - container-selinux
     - docker-selinux
     - docker-engine
+  when: result1|failed
 
 - name: Install docker-ce.repo
   shell: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo;yum makecache fast
+  when: result1|failed
 
 - name: Install docker
   yum: name=docker-ce.x86_64 state=present
   notify:
       - Start docker daemon
-
-## docker-composeのソースファイルを取得済みか確認
-- name: check exist docker-compose source file
-  shell: ls -l /usr/local/bin/docker-compose
-  ignore_errors: True
-  register: result1
+  when: result1|failed
 
 - name: download docker-compose
   shell: curl -L https://github.com/docker/compose/releases/download/1.12.0/docker-compose-`uname -s`-`uname -m` > docker-compose
@@ -46,15 +49,17 @@
 # 起動
 - name: http file directory
   file: path=/var/www/vhosts/{{ WEB_DOMAIN }} state=directory owner=root group=root mode=0755
+  when: result1|failed
 
 - name: http file dummy
   copy: src=files/dummy.html dest=/var/www/vhosts/{{ WEB_DOMAIN }}/dummy.html
+  when: result1|failed
 
 - name: copy compose file to remote server
   template: src=files/docker-compose.yml dest=~/docker-compose.yml
   notify:
     - Start docker daemon
-
+  when: result1|failed
 
 #- name: run docker compose
 #  docker_service:
@@ -75,6 +80,7 @@
       line: 'export HTTPS_PORTAL_STAGE={{HTTPS_PORTAL_STAGE}}'
   notify:
     - Restart bash_profile
+  when: result1|failed
 
 - name: run docker compose
   shell: docker-compose up -d
