@@ -9,3 +9,8 @@ export WERCKER_PIPELINE_ID=
 # Let's Encrypt
 export WEB_DOMAIN=
 export WEB_DOMAIN_MAIL_ADDRESS=
+
+# monitoring
+export AWS_PROFILE=
+export SLACK_WEBHOOK_URL=
+export HEALTH_CHECK_URL=

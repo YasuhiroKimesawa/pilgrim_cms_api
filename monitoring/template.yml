@@ -1,0 +1,97 @@
+AWSTemplateFormatVersion : '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Pilgrim−CRM監視
+Parameters:
+  StageName:
+    Type: String
+    Description: Stage name to deploy
+  SlackWebhookURL:
+    Type: String
+    Description: slack webhook api
+  HealthCheckURL:
+    Type: String
+    Description: slack webhook api
+  LambdaSrcDir:
+    Type: String
+    Description: Lambdaのソース置き場
+    Default: "app/"
+  AppName:
+    Type: String
+    Description: アプリの名前
+    Default: "pilgrim-crm"
+
+Resources:
+  NotifyStressTestFunction:
+    Type: AWS::Serverless::Function
+    Description: 負荷テスト(stress test)結果通知
+    Properties:
+      FunctionName: !Join [ "-", [ !Ref StageName, !Ref AppName, notify-stress-test] ]
+      Handler: !Join [ "", [ !Ref LambdaSrcDir, notify_stress_test.notify_stress_test_handler] ]
+      Runtime: python3.6
+      Timeout: 40
+      Policies:
+        - AmazonS3FullAccess
+      #  Statement:
+      #    - Effect: Allow
+      #      Action: s3:GetObject
+      #      Resource: !Sub 'arn:aws:s3:::${PutStressTestResultBucket}/*'
+      Events:
+        PutStressTestResultEvent:
+          Type: S3
+          Properties:
+            Bucket: !Ref PutStressTestResultBucket
+            Events: s3:ObjectCreated:*
+      Tags:
+        Service: PilgrimCRM
+
+  NotifyCoverageFunction:
+    Type: AWS::Serverless::Function
+    Description: カバレッジ(coverage)結果通知
+    Properties:
+      FunctionName: !Join [ "-", [ !Ref StageName, !Ref AppName, notify-coverage] ]
+      Handler: !Join [ "", [ !Ref LambdaSrcDir, notify_coverage.notify_coverage_handler] ]
+      Runtime: python3.6
+      Timeout: 40
+      Policies:
+        - AmazonS3FullAccess
+        #Statement:
+        #  - Effect: Allow
+        #    Action: s3:GetObject
+        #    Resource: !Sub 'arn:aws:s3:::${PutCoverageResultBucket}/*'
+      Events:
+        PutCoverageResultEvent:
+          Type: S3
+          Properties:
+            Bucket: !Ref PutCoverageResultBucket
+            Events: s3:ObjectCreated:*
+      Tags:
+        Service: PilgrimCRM
+
+  NotifyHealthMonitoringFunction:
+    Type: AWS::Serverless::Function
+    Description: Eventからキックされ、サーバーのHealthチェックを行い通知する
+    Properties:
+      FunctionName: !Join [ "-", [ !Ref StageName, !Ref AppName, health-monitoring] ]
+      Handler: !Join [ "", [ !Ref LambdaSrcDir, health_monitoring.health_monitoring_handler] ]
+      Runtime: python3.6
+      Timeout: 40
+      Tags:
+        Service: Todolife
+      Environment:
+        Variables:
+          CHECK_URL: !Ref HealthCheckURL
+          SLACK_POST_URL: !Ref SlackWebhookURL
+      Events:
+        CheckWebsiteEvent:
+          Type: Schedule
+          Properties:
+            Schedule: rate(1 day)
+
+  PutCoverageResultBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Join [ "", [ !Ref AppName, pilgrim-crm-coverage-result] ]
+  PutStressTestResultBucket:
+     Type: AWS::S3::Bucket
+     Properties:
+       BucketName: !Join [ "", [ !Ref AppName, pilgrim-crm-stress-test-result] ]

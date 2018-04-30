@@ -10,3 +10,5 @@ addSbtPlugin("com.geirsson" % "sbt-scalafmt" % "1.4.0")
 addSbtPlugin("org.scalastyle" %% "scalastyle-sbt-plugin" % "1.0.0")
 // sbt scalastyleGenerateConfig ...configファイル作成
 // sbt scalastyle
+
+addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.5.1")
