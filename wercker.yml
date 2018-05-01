@@ -23,10 +23,12 @@ sbt-build:
             code: sbt assembly
 deploy-monitoring:
     steps:
-        - edgecaseadmin/install-aws-cli:
-            key: $AWS_KEY
-            secret: $AWS_SECRET
-            region: $AWS_REGION
+        - script:
+            code: aws configure set aws_access_key_id $AWS_KEY
+        - script:
+            code: aws configure set aws_secret_access_key $AWS_SECRET
+        - script:
+            code: aws configure set default.region $AWS_REGION
         - script:
             code: sh monitoring/deploy.sh
 deploy-ansible:
