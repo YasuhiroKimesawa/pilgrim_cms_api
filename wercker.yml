@@ -24,6 +24,8 @@ sbt-build:
 deploy-monitoring:
     steps:
         - script:
+            code: pip install -r monitoring/requirements.txt
+        - script:
             code: aws configure set aws_access_key_id $AWS_KEY
         - script:
             code: aws configure set aws_secret_access_key $AWS_SECRET
