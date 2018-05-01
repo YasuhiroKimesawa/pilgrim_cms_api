@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
-cwd=`dirname "${0}"`
+cwd=$(pwd)
 deploy_bucket='pilgrim-crm-monitoring-app-deployment'
 
-mkdir -p ./dist
-rm -rf ./dist/*
+mkdir -p $(pwd)/dist
+rm -rf $(pwd)/dist/*
 cp -r ${cwd}/app ${cwd}/dist/app
 cp ${cwd}/template.yml ${cwd}/dist/template.yml
-pip install -r requirements.txt -t ./dist
+pip install -r $(pwd)/requirements.txt -t $(pwd)/dist
 
 if aws s3 ls s3://${deploy_bucket} --region ap-northeast-1 --profile ${AWS_PROFILE} 2>&1 | grep -q 'NoSuchBucket'; then
     aws s3 mb s3://${deploy_bucket} --region ap-northeast-1 --profile ${AWS_PROFILE}

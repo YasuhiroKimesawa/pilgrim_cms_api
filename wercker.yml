@@ -28,7 +28,7 @@ deploy-monitoring:
             secret: $AWS_SECRET
             region: $AWS_REGION
         - script:
-            code: sh ./monitoring/deploy.sh
+            code: sh monitoring/deploy.sh
 deploy-ansible:
     steps:
         - script:
