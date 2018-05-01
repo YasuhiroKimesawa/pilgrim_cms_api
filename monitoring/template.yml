@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion : '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: Pilgrim−CRM監視
+Description: PilgrimCRMMonitoring
 Parameters:
   StageName:
     Type: String
@@ -23,7 +23,7 @@ Parameters:
 Resources:
   NotifyStressTestFunction:
     Type: AWS::Serverless::Function
-    Description: 負荷テスト(stress test)結果通知
+    Description: notification of stress test result
     Properties:
       FunctionName: !Join [ "-", [ !Ref StageName, !Ref AppName, notify-stress-test] ]
       Handler: !Join [ "", [ !Ref LambdaSrcDir, notify_stress_test.notify_stress_test_handler] ]
@@ -46,7 +46,7 @@ Resources:
 
   NotifyCoverageFunction:
     Type: AWS::Serverless::Function
-    Description: カバレッジ(coverage)結果通知
+    Description: notification of coverage result
     Properties:
       FunctionName: !Join [ "-", [ !Ref StageName, !Ref AppName, notify-coverage] ]
       Handler: !Join [ "", [ !Ref LambdaSrcDir, notify_coverage.notify_coverage_handler] ]
@@ -69,7 +69,7 @@ Resources:
 
   NotifyHealthMonitoringFunction:
     Type: AWS::Serverless::Function
-    Description: Eventからキックされ、サーバーのHealthチェックを行い通知する
+    Description: notification of server health check
     Properties:
       FunctionName: !Join [ "-", [ !Ref StageName, !Ref AppName, health-monitoring] ]
       Handler: !Join [ "", [ !Ref LambdaSrcDir, health_monitoring.health_monitoring_handler] ]
