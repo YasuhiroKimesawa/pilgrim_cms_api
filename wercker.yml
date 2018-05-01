@@ -28,8 +28,8 @@ deploy-monitoring:
         - script:
             code : |
               mkdir -p ~/.aws
-              printf "[default]\nregion = ${$AWS_REGION}\naws_access_key_id = ${AWS_KEY_ID}\naws_secret_access_key = ${AWS_SECRET}" > ~/.aws/config
-              printf "[default]\naws_access_key_id = ${AWS_KEY_ID}\naws_secret_access_key = ${AWS_SECRET}" > ~/.aws/credentials
+              echo -e "[default]\nregion = ${$AWS_REGION}\naws_access_key_id = ${AWS_KEY_ID}\naws_secret_access_key = ${AWS_SECRET}" > ~/.aws/config
+              echo -e "[default]\naws_access_key_id = ${AWS_KEY_ID}\naws_secret_access_key = ${AWS_SECRET}" > ~/.aws/credentials
               chmod 600 ~/.aws/*
         - script:
             code: sh monitoring/deploy.sh
