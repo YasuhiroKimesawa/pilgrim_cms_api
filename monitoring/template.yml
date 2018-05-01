@@ -13,11 +13,11 @@ Parameters:
     Description: slack webhook api
   LambdaSrcDir:
     Type: String
-    Description: Lambdaのソース置き場
+    Description: push lambda sources
     Default: "app/"
   AppName:
     Type: String
-    Description: アプリの名前
+    Description: app name
     Default: "pilgrim-crm"
 
 Resources:
