@@ -90,8 +90,8 @@ Resources:
   PutCoverageResultBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: !Join [ "", [ !Ref AppName, pilgrim-crm-coverage-result] ]
+      BucketName: !Join [ "-", [ !Ref AppName, coverage-result] ]
   PutStressTestResultBucket:
      Type: AWS::S3::Bucket
      Properties:
-       BucketName: !Join [ "", [ !Ref AppName, pilgrim-crm-stress-test-result] ]
+       BucketName: !Join [ "-", [ !Ref AppName, stress-test-result] ]
