@@ -2,7 +2,7 @@ import datasources.article.ArticleDataSource
 import models.article.ArticleRepository
 import scaldi.Module
 import usecases.article.ArticleUseCase
-import userinterface.user.UserController
+import userinterfaces.user.UserController
 import userinterfaces.article.ArticleController
 
 class DiModule extends Module {

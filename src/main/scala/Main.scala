@@ -8,7 +8,7 @@ import io.finch._
 import io.finch.circe._
 import scaldi.Injectable
 import scaldi.Injector
-import userinterface.user.UserController
+import userinterfaces.user.UserController
 import userinterfaces.article.ArticleController
 
 object Main {

@@ -1,4 +1,4 @@
-package userinterface.user
+package userinterfaces.user
 
 import io.circe.generic.auto._
 import io.finch._

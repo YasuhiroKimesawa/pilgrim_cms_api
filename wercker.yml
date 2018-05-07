@@ -27,7 +27,7 @@ sbt-build:
             code: cat /dev/null | sbt clean coverage test
         - script:
             name: sbt coverageReport
-            code: cat /dev/null | sbt coverageReport
+            code: cat /dev/null | sbt coverageReport coveralls
         - script:
             code: aws s3 cp ./target/scala-2.12/scoverage-report s3://pilgrim-crm-coverage-result/ --recursive --acl public-read --cache-control "max-age=3600" --profile=${AWS_PROFILE}
         - script:

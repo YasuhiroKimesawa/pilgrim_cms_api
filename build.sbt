@@ -4,6 +4,9 @@ version := "0.1"
 
 scalaVersion := "2.12.5"
 
+lazy val root = (project in file("."))
+  .settings(Coverage.Settings)
+
 scalacOptions := Seq("-unchecked", "-deprecation", "-encoding", "utf8", "-Xlint")
 
 assemblyOutputPath in assembly := file("./pilgrim-crm.jar")
