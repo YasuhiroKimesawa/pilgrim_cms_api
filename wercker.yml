@@ -12,13 +12,14 @@ sbt-build:
         - script:
             name: npm install
             code: npm install
-        - script:
-            cmd: /bin/bash
-            code : |
-              mkdir -p ~/.aws
-              echo -e "[default]\nregion = ${AWS_REGION}\naws_access_key_id = ${AWS_KEY_ID}\naws_secret_access_key = ${AWS_SECRET}" > ~/.aws/config
-              echo -e "[default]\naws_access_key_id = ${AWS_KEY_ID}\naws_secret_access_key = ${AWS_SECRET}" > ~/.aws/credentials
-              chmod 600 ~/.aws/*
+        # 負荷テストの方で使う予定
+        #- script:
+        #    cmd: /bin/bash
+        #    code : |
+        #      mkdir -p ~/.aws
+        #      echo -e "[default]\nregion = ${AWS_REGION}\naws_access_key_id = ${AWS_KEY_ID}\naws_secret_access_key = ${AWS_SECRET}" > ~/.aws/config
+        #      echo -e "[default]\naws_access_key_id = ${AWS_KEY_ID}\naws_secret_access_key = ${AWS_SECRET}" > ~/.aws/credentials
+        #      chmod 600 ~/.aws/*
         - script:
             name: sbt test compile
             code: cat /dev/null | sbt test:compile
@@ -28,8 +29,9 @@ sbt-build:
         - script:
             name: sbt coverageReport
             code: cat /dev/null | sbt coverageReport coveralls
-        - script:
-            code: aws s3 cp ./target/scala-2.12/scoverage-report s3://pilgrim-crm-coverage-result/ --recursive --acl public-read --cache-control "max-age=3600" --profile=${AWS_PROFILE}
+        # 負荷テストの方で使う予定
+        #- script:
+        #    code: aws s3 cp ./target/scala-2.12/scoverage-report s3://pilgrim-crm-coverage-result/ --recursive --acl public-read --cache-control "max-age=3600" --profile=${AWS_PROFILE}
         - script:
             name: sbt build
             code: sbt assembly
