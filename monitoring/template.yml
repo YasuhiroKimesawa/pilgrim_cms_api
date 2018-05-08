@@ -44,29 +44,6 @@ Resources:
       Tags:
         Service: PilgrimCRM
 
-  NotifyCoverageFunction:
-    Type: AWS::Serverless::Function
-    Description: notification of coverage result
-    Properties:
-      FunctionName: !Join [ "-", [ !Ref StageName, !Ref AppName, notify-coverage] ]
-      Handler: !Join [ "", [ !Ref LambdaSrcDir, notify_coverage.notify_coverage_handler] ]
-      Runtime: python3.6
-      Timeout: 40
-      Policies:
-        - AmazonS3FullAccess
-        #Statement:
-        #  - Effect: Allow
-        #    Action: s3:GetObject
-        #    Resource: !Sub 'arn:aws:s3:::${PutCoverageResultBucket}/*'
-      Events:
-        PutCoverageResultEvent:
-          Type: S3
-          Properties:
-            Bucket: !Ref PutCoverageResultBucket
-            Events: s3:ObjectCreated:*
-      Tags:
-        Service: PilgrimCRM
-
   NotifyHealthMonitoringFunction:
     Type: AWS::Serverless::Function
     Description: notification of server health check
@@ -87,10 +64,6 @@ Resources:
           Properties:
             Schedule: rate(1 day)
 
-  PutCoverageResultBucket:
-    Type: AWS::S3::Bucket
-    Properties:
-      BucketName: !Join [ "-", [ !Ref AppName, coverage-result] ]
   PutStressTestResultBucket:
      Type: AWS::S3::Bucket
      Properties:
