@@ -6,10 +6,15 @@ scalaVersion := "2.12.5"
 
 lazy val root = (project in file("."))
   .settings(Coverage.Settings)
+  .settings(inConfig(Gatling)(Defaults.testSettings): _*)
+
+enablePlugins(GatlingPlugin)
 
 scalacOptions := Seq("-unchecked", "-deprecation", "-encoding", "utf8", "-Xlint")
 
 assemblyOutputPath in assembly := file("./pilgrim-crm.jar")
+
+scalaSource in Gatling := sourceDirectory.value / "stress_test" / "scala"
 
 libraryDependencies ++= Seq(
   // "com.twitter" %% "finagle-mysql" % "18.3.0",
@@ -37,7 +42,10 @@ libraryDependencies ++= Seq(
   "org.mockito" % "mockito-core" % "2.10.0" % "test",
   "com.github.julien-truffaut" %% "monocle-core" % "1.5.0" % "test",
   "com.github.julien-truffaut" %% "monocle-macro" % "1.5.0" % "test",
-  "com.github.julien-truffaut" %% "monocle-law" % "1.5.0" % "test"
+  "com.github.julien-truffaut" %% "monocle-law" % "1.5.0" % "test",
+
+  "io.gatling.highcharts" % "gatling-charts-highcharts" % "2.3.1" % "test",
+  "io.gatling"            % "gatling-test-framework"    % "2.3.0" % "test"
 )
 
 // deduplicate: different file contents found in the following: のエラーが出る対応
