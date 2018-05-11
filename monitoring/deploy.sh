@@ -25,4 +25,8 @@ fi
     --stack-name pilgrim-crm-monitoring \
     --capabilities CAPABILITY_IAM \
     --profile ${AWS_PROFILE} \
-    --parameter-overrides StageName=dev SlackWebhookURL=${SLACK_WEBHOOK_URL} HealthCheckURL=${HEALTH_CHECK_URL})
+    --parameter-overrides StageName=dev  \
+    SlackWebhookURL=${SLACK_WEBHOOK_URL}  \
+    HealthCheckURL=${HEALTH_CHECK_URL} \
+    StressTestResultAllowIPHome=${STRESS_TEST_RESULT_ALLOW_IP_HOME} )
+
