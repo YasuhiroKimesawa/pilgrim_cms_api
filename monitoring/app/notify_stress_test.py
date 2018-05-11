@@ -6,6 +6,7 @@ from urllib import request
 from urllib import parse
 
 import boto3 as boto3
+from boto3 import Session
 
 
 def notify_stress_test_handler(event, context):
@@ -28,8 +29,8 @@ def build_message(s3_bucket_name, web_site_url):
     Slack用のメッセージを作成
     """
     post_message = '負荷テストが完了しました¥n'
-    s3 = boto3.resource('s3')
-    list_objects = s3.list_objects(Bucket=s3_bucket_name, Prefix='/', Delimiter='/')
+    s3client = boto3.client('s3')
+    list_objects = s3client.list_objects_v2(Bucket=s3_bucket_name, Prefix='/', Delimiter='/')
     for folder in list_objects.get('CommonPrefixes'):
         post_message = post_message + (folder.get('Prefix') + "index.html¥n")
 
