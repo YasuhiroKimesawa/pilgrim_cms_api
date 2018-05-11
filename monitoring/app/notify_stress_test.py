@@ -29,11 +29,11 @@ def build_message(s3_bucket_name, web_site_url):
     """
     Slack用のメッセージを作成
     """
-    post_message = '負荷テストが完了しました¥n'
+    post_message = '負荷テストが完了しました \n'
     s3client = boto3.client('s3')
     list_objects = s3client.list_objects_v2(Bucket=s3_bucket_name)
     for folder in list_objects["Contents"]:
-        post_message = post_message + (web_site_url + "/" + folder["Key"] + '/' + "index.html¥n")
+        post_message = post_message + (web_site_url + "/" + folder["Key"] + '/' + "index.html \n")
 
     side_color = "good"
 

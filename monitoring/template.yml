@@ -57,12 +57,11 @@ Resources:
           Properties:
             Bucket: !Ref PutStressTestResultBucket
             Events: s3:ObjectCreated:*
-            #Filter:
-            #  S3Key:
-            #    Rules:
-            #      -
-            #        Name: prefix
-            #        Value: index
+            Filter:
+              S3Key:
+                Rules:
+                  - Name: suffix
+                    Value: index.html
       Tags:
         Service: PilgrimCRM
 
