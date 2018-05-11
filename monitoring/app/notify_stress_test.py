@@ -33,7 +33,10 @@ def build_message(s3_bucket_name, web_site_url):
     s3client = boto3.client('s3')
     list_objects = s3client.list_objects_v2(Bucket=s3_bucket_name)
     for folder in list_objects["Contents"]:
-        post_message = post_message + (web_site_url + "/" + folder["Key"] + '/' + "index.html \n")
+        if folder["Key"][10:] != "index.html":
+            continue
+
+        post_message = post_message + (web_site_url + "/" + folder["Key"] + "\n")
 
     side_color = "good"
 
