@@ -19,6 +19,7 @@ def notify_stress_test_handler(event, context):
 
     # event
     s3_bucket_name = event['Records'][0]['s3']['bucket']['name']
+    print("s3_bucket_name:" + s3_bucket_name)
 
     post(build_message(s3_bucket_name, web_site_url), slack_post_url)
     return
@@ -30,9 +31,9 @@ def build_message(s3_bucket_name, web_site_url):
     """
     post_message = '負荷テストが完了しました¥n'
     s3client = boto3.client('s3')
-    list_objects = s3client.list_objects_v2(Bucket=s3_bucket_name, Prefix='/', Delimiter='/')
+    list_objects = s3client.list_objects_v2(Bucket=s3_bucket_name)
     for folder in list_objects["Contents"]:
-        post_message = post_message + (folder["Key"] + '/' + "index.html¥n")
+        post_message = post_message + (web_site_url + "/" + folder["Key"] + '/' + "index.html¥n")
 
     side_color = "good"
 
