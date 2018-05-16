@@ -24,6 +24,15 @@ sbt-build:
         - script:
             name: sbt build
             code: sbt assembly
+    after-steps:
+        - theollyr/slack-notifier@1.3.1:
+            url: $SLACK_WEBHOOK_URL
+            channel: "ci_cms"
+            username: "木目沢 康廣"
+            branch: master
+            passed_msg: "sbt-build 成功"
+            failed_msg: "sbt-build 失敗"
+
 stress-test:
     steps:
         - script:
@@ -56,6 +65,14 @@ deploy-monitoring:
               chmod 600 ~/.aws/*
         - script:
             code: sh monitoring/deploy.sh
+    after-steps:
+        - theollyr/slack-notifier@1.3.1:
+            url: $SLACK_WEBHOOK_URL
+            channel: "ci_cms"
+            username: "木目沢 康廣"
+            branch: master
+            passed_msg: "monitoring deploy 成功"
+            failed_msg: "monitoring deploy 失敗"
 deploy-ansible:
     steps:
         - script:
@@ -74,6 +91,7 @@ deploy-ansible:
             name: ansible
             code: ansible-playbook ansible/roles/setup_CentOS7.yml -i ansible/hosts -vv
     after-steps:
+    # 失敗した場合のwerckerのdockerをpush
     #    - internal/docker-push:
     #        username: $DOCKER_HUB_USERNAME
     #        password: $DOCKER_HUB_PASSWORD
@@ -84,3 +102,5 @@ deploy-ansible:
              channel: "ci_cms"
              username: "木目沢 康廣"
              branch: master
+             passed_msg: "ansible完了"
+             failed_msg: "ansible失敗"

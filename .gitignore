@@ -406,3 +406,6 @@ project/plugins/project/
 
 # wercker
 .wercker
+
+# mongo-data
+mongo-data/*

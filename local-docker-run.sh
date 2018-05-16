@@ -1,0 +1,1 @@
+docker-compose -f ./ansible/roles/files/docker-compose.yml up -d

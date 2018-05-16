@@ -26,7 +26,7 @@ services:
        STAGE: ${HTTPS_PORTAL_STAGE}
        # FORCE_RENEW: 'true'
      volumes:
-       - /var/www/vhosts/${WEB_DOMAIN}:/var/www/vhosts/${WEB_DOMAIN}
+       - ${NGINX_VOLUMES}/${WEB_DOMAIN}:/var/www/vhosts/${WEB_DOMAIN}
 
   mongodb:
     image: mongo:latest
@@ -35,7 +35,7 @@ services:
       -  'MONGODB_USER=user'
       -  'MONGODB_PASS=password!'
     volumes:
-      - 'mongodb-data:/data/db'
+      - ${MONGO_VOLUMES}:/data/db
     ports:
       - '27017:27017'
     command: mongod --smallfiles
@@ -50,6 +50,3 @@ services:
       - 'ME_CONFIG_BASICAUTH_USERNAME=user'
       - 'ME_CONFIG_BASICAUTH_PASSWORD=password!'
     image: mongo-express
-
-volumes:
-  mongodb-data: {}

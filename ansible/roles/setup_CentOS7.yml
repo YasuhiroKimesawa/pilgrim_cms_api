@@ -10,9 +10,13 @@
     - WEB_DOMAIN: "{{ lookup('env','WEB_DOMAIN') }}"
     - WEB_DOMAIN_MAIL_ADDRESS: "{{ lookup('env','WEB_DOMAIN_MAIL_ADDRESS') }}"
     - HTTPS_PORTAL_STAGE: "{{ lookup('env','HTTPS_PORTAL_STAGE') }}"
+    - NGINX_VOLUMES: "{{ lookup('env','NGINX_VOLUMES') }}"
+    - MONGO_VOLUMES: "{{ lookup('env','MONGO_VOLUMES') }}"
    environment:
       WEB_DOMAIN: "{{ lookup('env','WEB_DOMAIN') }}"
       HTTPS_PORTAL_STAGE: "{{ lookup('env','HTTPS_PORTAL_STAGE') }}"
+      NGINX_VOLUMES: "{{ lookup('env','NGINX_VOLUMES') }}"
+      MONGO_VOLUMES: "{{ lookup('env','MONGO_VOLUMES') }}"
    tasks:
     - name: Change TimeZone to Asia/Tokyo
       file: path=/etc/localtime state=link src=/usr/share/zoneinfo/Asia/Tokyo force=yes

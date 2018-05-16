@@ -51,6 +51,10 @@
   file: path=/var/www/vhosts/{{ WEB_DOMAIN }} state=directory owner=root group=root mode=0755
   when: result1|failed
 
+- name: mongo file directory
+  file: path=/data/db state=directory owner=root group=root mode=0755
+  when: result1|failed
+
 - name: http file dummy
   copy: src=files/dummy.html dest=/var/www/vhosts/{{ WEB_DOMAIN }}/dummy.html
   when: result1|failed

@@ -6,9 +6,13 @@ export WEBSERVER_IP_ADDRESS=
 export WERCKER_TOKEN=
 export WERCKER_PIPELINE_ID=
 
-# Let's Encrypt
+# https-portal
 export WEB_DOMAIN=
 export WEB_DOMAIN_MAIL_ADDRESS=
+export NGINX_VOLUMES=
+
+# mongo
+export MONGO_VOLUMES=
 
 # monitoring
 export AWS_PROFILE=
