@@ -11,9 +11,6 @@ export WEB_DOMAIN=
 export WEB_DOMAIN_MAIL_ADDRESS=
 export NGINX_VOLUMES=
 
-# mongo
-export MONGO_VOLUMES=
-
 # monitoring
 export AWS_PROFILE=
 export SLACK_WEBHOOK_URL=

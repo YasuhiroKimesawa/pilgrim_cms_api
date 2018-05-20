@@ -35,14 +35,14 @@ services:
       -  'MONGODB_USER=user'
       -  'MONGODB_PASS=password!'
     volumes:
-      - ${MONGO_VOLUMES}:/data/db
+      - mongo-data:/data/db
     ports:
       - '27017:27017'
     command: mongod --smallfiles
   mongo-express:
     container_name: mongo-express
     links:
-      - 'mongodb:mongo'
+      - 'mongodb:mongodb'
     ports:
       - '8081:8081'
     environment:
@@ -50,3 +50,6 @@ services:
       - 'ME_CONFIG_BASICAUTH_USERNAME=user'
       - 'ME_CONFIG_BASICAUTH_PASSWORD=password!'
     image: mongo-express
+volumes:
+    mongo-data:
+        driver: 'local'
