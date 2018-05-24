@@ -34,6 +34,7 @@ services:
     environment:
       -  'MONGODB_USER=user'
       -  'MONGODB_PASS=password!'
+      -  'MONGO_INITDB_DATABASE=pilgrim-crm'
     volumes:
       - mongo-data:/data/db
     ports:
