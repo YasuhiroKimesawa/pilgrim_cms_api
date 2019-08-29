@@ -1,18 +1,18 @@
 ## opensslのソースファイルを取得済みか確認
 - name: check exist openssl source file
-  shell: ls -l /usr/local/src/openssl-1.1.1-pre4.tar.gz
+  shell: ls -l /usr/local/src/openssl-1.1.1c.tar.gz
   ignore_errors: True
   register: result1
 
 ## opensslのソースファイル取得。ただし、すでに取得済みならスキップ
 - name: get openssl source file
-  shell: chdir=/usr/local/src wget https://www.openssl.org/source/openssl-1.1.1c.tar.gz
-  when: result1|failed
+  get_url:  url=https://www.openssl.org/source/openssl-1.1.1c.tar.gz dest=/usr/local/src/openssl-1.1.1c.tar.gz
+  when: result1 is failed
 
 ## opensslのソースインストールを解凍
 - name: get openssl source file
   shell: chdir=/usr/local/src tar -zxf openssl-1.1.1c.tar.gz
-  when: result1|failed
+  when: result1 is failed
 
 ## opensslがインストールされているか確認
 - name: check openssl install
