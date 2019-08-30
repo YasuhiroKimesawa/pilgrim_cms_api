@@ -1,4 +1,6 @@
 box: kimesawa/sbt_pip_npm
+no-response-timeout: 30
+command-timeout: 50
 ready:
     steps:
         - script:
